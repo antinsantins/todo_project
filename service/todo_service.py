@@ -1,15 +1,35 @@
+from entity.todo_task import TodoTask
+
+
 class TodoService:
-    def get_todos(self, completed: bool, deleted: bool):
-        pass
+    todos: list[TodoTask]
 
-    def add_todo(self, title: str):
-        pass
+    def __init__(self) -> None:
+        super().__init__()
+        self.todos = list()
 
-    def update_completed(self, id: int, completed: bool, title: str):
-        pass
+    def get_todos(self, completed: bool = None) -> list[TodoTask]:
+        not_deleted = [todo for todo in self.todos if todo.deleted is False]
+        if completed is None:
+            return not_deleted
+        return [todo for todo in self.todos if todo.completed is completed]
 
-    def delete(self, id: int, completed: bool):
-        pass
+    def add_todo(self, title: str) -> TodoTask:
+        todo = TodoTask(len(self.todos), title)
+        self.todos.append(todo)
+        return todo
+
+    def update_completed(self, id: int, title: str, completed: bool) -> TodoTask:
+        for todo in self.todos:
+            if todo.id == id:
+                todo.title = title
+                todo.completed = completed
+                return todo
+
+    def delete(self, id: int):
+        for todo in self.todos:
+            if todo.id == id:
+                todo.deleted = True
 
     def delete_all(self):
-        pass
+        self.todos = [todo for todo in self.todos if todo.completed is False]
