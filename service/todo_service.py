@@ -25,6 +25,7 @@ class TodoService:
                 todo.title = title
                 todo.completed = completed
                 return todo
+        return 404
 
     def delete(self, id: int):
         for todo in self.todos:

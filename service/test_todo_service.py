@@ -17,6 +17,28 @@ class TestTodoService(TestCase):
         ]
         self.assertListEqual(actual_list, expected_list)
 
+    def test_completed_no(self):
+        self.todo_service.add_todo("qwe")
+        self.todo_service.add_todo("asd")
+        self.todo_service.update_completed(0, "qwe", True)
+        self.todo_service.update_completed(1, "asd", False)
+        actual_list = self.todo_service.get_todos(False)
+        expected_list = [
+            TodoTask(1, "asd")
+        ]
+        self.assertListEqual(actual_list, expected_list)
+
+    def test_completed_yes(self):
+        self.todo_service.add_todo("qwe")
+        self.todo_service.add_todo("asd")
+        self.todo_service.update_completed(0, "qwe", True)
+        self.todo_service.update_completed(1, "asd", False)
+        actual_list = self.todo_service.get_todos(True)
+        expected_list = [
+            TodoTask(0, "qwe", True)
+        ]
+        self.assertListEqual(actual_list, expected_list)
+
     def test_update_completed(self):
         self.todo_service.add_todo("Поездка")
         self.todo_service.update_completed(0, "Поездка в Санкт-Петербург", completed=False)
